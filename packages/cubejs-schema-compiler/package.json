@@ -75,7 +75,7 @@
     "jest": "^27",
     "mssql": "^10.0.2",
     "mysql": "^2.18.1",
-    "pg-promise": "^10.5.2",
+    "pg-promise": "^11.5.5",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
     "source-map-support": "^0.5.19",
