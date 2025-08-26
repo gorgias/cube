@@ -1,7 +1,9 @@
 # Gorgias Fork of Cube
 This fork was made to be able to build our own cubestore image with StatsD metrics fixes for [this issue](https://github.com/cube-js/cube/issues/9920).
 
-Build and tag the image with:
+The CI will build and push the image for the `gorgisa` branch but only build the image for testing for other branches.
+
+Locall, build and tag the image with:
 
 ```bash
 docker build -t us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.35.79-gorgias -f rust/cubestore/gorgias.Dockerfile rust/cubestore
@@ -33,8 +35,8 @@ docker push us-central1-docker.pkg.dev/gorgias-revenue-production/container-imag
 1. Update the gorgias branch to be at the tag of the cubestore version you want to use. This is our "master" branch on the fork.
 2. With new new version checked out, use the `cube/rust/cubestore/Dockerfile` as reference, update `cube/rust/cubestore/gorgias.Dockerfile` such that they're identical.
 3. Update the final target `FROM` to match the new tag version you wish to use, so that our image is based on the official image. You may wish to leave out package install steps since they'll already be in the image.
-4. Update the README version tags as well above.
-4. Build and push the image as described above.
+4. Also update the `TAG` variable in the `cube/.github/workflows/image-build.yaml` file to match the new tag version you wish to use.
+5. Update the README version tags as well above.
 
 
 <p align="center">
