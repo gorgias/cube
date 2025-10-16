@@ -261,6 +261,8 @@ export class BaseQuery {
     }).filter(R.identity).map(this.newTimeDimension.bind(this));
     this.allFilters = this.timeDimensions.concat(this.segments).concat(this.filters);
 
+    this.collectAllMemberNames(); // Ensure member names are computed so that they are not lazily added during join computation
+
     this.join = this.joinGraph.buildJoin(this.allJoinHints);
     this.cubeAliasPrefix = this.options.cubeAliasPrefix;
     this.preAggregationsSchemaOption = this.options.preAggregationsSchema ?? DEFAULT_PREAGGREGATIONS_SCHEMA;
