@@ -6,10 +6,14 @@
 
 import { getEnv } from '@cubejs-backend/shared';
 import { PostgresDriver, PostgresDriverConfiguration } from '@cubejs-backend/postgres-driver';
-import { DownloadTableCSVData, DriverCapabilities, UnloadOptions } from '@cubejs-backend/base-driver';
+import {
+  DownloadTableCSVData,
+  DriverCapabilities,
+  StreamOptions,
+  StreamTableDataWithTypes,
+  UnloadOptions
+} from '@cubejs-backend/base-driver';
 import crypto from 'crypto';
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { S3, GetObjectCommand } from '@aws-sdk/client-s3';
 
 interface RedshiftDriverExportRequiredAWS {
   bucketType: 's3',
@@ -91,6 +95,32 @@ export class RedshiftDriver extends PostgresDriver<RedshiftDriverConfiguration> 
       readOnly: false,
       exportBucket: this.getExportBucket(dataSource),
     };
+  }
+
+  protected static checkValuesLimit(values?: unknown[]) {
+    // Redshift server is not exactly compatible with PostgreSQL protocol
+    // And breaks after 32767 parameter values with `there is no parameter $-32768`
+    // This is a bug/misbehaviour on server side, nothing we can do besides generate a more meaningful error
+    const length = (values?.length ?? 0);
+    if (length >= 32768) {
+      throw new Error(`Redshift server does not support more than 32767 parameters, but ${length} passed`);
+    }
+  }
+
+  public override async stream(
+    query: string,
+    values: unknown[],
+    options: StreamOptions
+  ): Promise<StreamTableDataWithTypes> {
+    RedshiftDriver.checkValuesLimit(values);
+
+    return super.stream(query, values, options);
+  }
+
+  protected override async queryResponse(query: string, values: unknown[]) {
+    RedshiftDriver.checkValuesLimit(values);
+
+    return super.queryResponse(query, values);
   }
 
   protected getExportBucket(
@@ -213,7 +243,7 @@ export class RedshiftDriver extends PostgresDriver<RedshiftDriverConfiguration> 
         UNLOAD ('SELECT ${columns} FROM ${tableName}')
         TO '${bucketType}://${bucketName}/${exportPathName}/'
       `;
-      
+
       // Prefer the unloadArn if it is present
       const credentialQuery = unloadArn
         ? `iam_role '${unloadArn}'`
@@ -234,36 +264,27 @@ export class RedshiftDriver extends PostgresDriver<RedshiftDriverConfiguration> 
         };
       }
 
-      const client = new S3({
-        credentials: (keyId && secretKey) ? {
-          accessKeyId: keyId,
-          secretAccessKey: secretKey,
-        } : undefined,
-        region,
-      });
-      const list = await client.listObjectsV2({
-        Bucket: bucketName,
-        Prefix: exportPathName,
-      });
-      if (list && list.Contents) {
-        const csvFile = await Promise.all(
-          list.Contents.map(async (file) => {
-            const command = new GetObjectCommand({
-              Bucket: bucketName,
-              Key: file.Key,
-            });
-            return getSignedUrl(client, command, { expiresIn: 3600 });
-          })
-        );
+      const csvFile = await this.extractUnloadedFilesFromS3(
+        {
+          credentials: (keyId && secretKey) ? {
+            accessKeyId: keyId,
+            secretAccessKey: secretKey,
+          } : undefined,
+          region,
+        },
+        bucketName,
+        exportPathName,
+      );
 
-        return {
-          exportBucketCsvEscapeSymbol: this.config.exportBucketCsvEscapeSymbol,
-          csvFile,
-          types
-        };
+      if (csvFile.length === 0) {
+        throw new Error('Unable to UNLOAD table, there are no files in S3 storage');
       }
 
-      throw new Error('Unable to UNLOAD table, there are no files in S3 storage');
+      return {
+        exportBucketCsvEscapeSymbol: this.config.exportBucketCsvEscapeSymbol,
+        csvFile,
+        types
+      };
     } finally {
       conn.removeAllListeners('notice');
 
