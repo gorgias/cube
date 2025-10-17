@@ -35,7 +35,32 @@ jobs:
           username: _json_key
           password: ${{ secrets.GCLOUD_SERVICE_KEY_FILE }}
 
-      - name: Build and push
+      - name: Copy yarn.lock file
+        run: cp yarn.lock packages/cubejs-docker
+
+      - name: Build and push (cubejs)
+        uses: docker/build-push-action@v6
+        env:
+          DOCKER_BUILD_CHECKS_ANNOTATIONS: false
+          DOCKER_BUILD_RECORD_UPLOAD: false
+          DOCKER_BUILD_SUMMARY: true
+        with:
+          push: true  # ${{ github.ref == 'refs/heads/gorgias' }}
+          context: packages/cubejs-docker
+          file: packages/cubejs-docker/latest.Dockerfile
+          tags: |
+            us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubejs:${{ github.sha }}
+            us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubejs:${{ github.sha }}
+            us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubejs:${{ github.sha }}
+            us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubejs:${{ github.sha }}
+            us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubejs:${{ env.TAG }}
+            us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubejs:${{ env.TAG }}
+            us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubejs:${{ env.TAG }}
+            us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubejs:${{ env.TAG }}
+          cache-from: type=inline,image-manifest=true
+          cache-to: type=inline,image-manifest=true
+
+      - name: Build and push (cubestore)
         uses: docker/build-push-action@v6
         env:
           DOCKER_BUILD_CHECKS_ANNOTATIONS: false
