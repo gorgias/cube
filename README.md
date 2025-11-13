@@ -37,7 +37,9 @@ docker push us-central1-docker.pkg.dev/gorgias-revenue-production/container-imag
 3. Update the final target `FROM` to match the new tag version you wish to use, so that our image is based on the official image. You may wish to leave out package install steps since they'll already be in the image.
 4. Also update the `TAG` variable in the `cube/.github/workflows/image-build.yaml` file to match the new tag version you wish to use.
 5. Update the README version tags as well above.
+6. Delete unused directories such as `examples/` or `docs/` to avoid Dependabot alerts
 
+-----
 
 <p align="center">
   <a href="https://cube.dev?ref=github-readme"><img src="https://raw.githubusercontent.com/cube-js/cube/master/docs/content/cube-logo-with-bg.png" alt="Cube — Semantic Layer for Data Applications" width="300px"></a>
