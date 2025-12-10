@@ -28,7 +28,7 @@ RUN [ "$WITH_AVX2" -eq "1" ] && export RUSTFLAGS="-C target-feature=+avx2"; \
     cargo build --release -p cubestore
 
 
-FROM cubejs/cubestore:v1.0.4
+FROM cubejs/cubestore:v1.1.18
 
 COPY --from=builder /build/cubestore/target/release/cubestored .
 

@@ -1,7 +1,7 @@
 name: image build
 
 env:
-  TAG: v1.0.4-gorgias
+  TAG: v1.1.18-gorgias
 
 on:
   push:
