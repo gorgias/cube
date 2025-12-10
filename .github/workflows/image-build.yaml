@@ -43,7 +43,7 @@ jobs:
           DOCKER_BUILD_SUMMARY: true
         with:
           push: ${{ github.ref == 'refs/heads/gorgias' }}
-          context: rust/cubestore
+          context: rust/
           file: rust/cubestore/gorgias.Dockerfile
           tags: |
             us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:${{ github.sha }}
