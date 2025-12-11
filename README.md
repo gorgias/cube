@@ -6,14 +6,14 @@ The CI will build and push the image for the `gorgisa` branch but only build the
 Locall, build and tag the image with:
 
 ```bash
-docker build -t us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.36.11-gorgias -f rust/cubestore/gorgias.Dockerfile rust/cubestore
+docker build -t us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v1.0.4-gorgias -f rust/cubestore/gorgias.Dockerfile rust/cubestore
 
-docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.36.11-gorgias \
-  us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubestore:v0.36.11-gorgias
-docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.36.11-gorgias \
-  us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubestore:v0.36.11-gorgias
-docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.36.11-gorgias \
-  us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubestore:v0.36.11-gorgias
+docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v1.0.4-gorgias \
+  us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubestore:v1.0.4-gorgias
+docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v1.0.4-gorgias \
+  us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubestore:v1.0.4-gorgias
+docker tag us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v1.0.4-gorgias \
+  us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubestore:v1.0.4-gorgias
 ```
 
 Then push the image to the registry with:
@@ -23,10 +23,10 @@ Then push the image to the registry with:
 gcloud auth configure-docker us-east1-docker.pkg.dev --quiet
 gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
-docker push us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v0.36.11-gorgias
-docker push us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubestore:v0.36.11-gorgias
-docker push us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubestore:v0.36.11-gorgias
-docker push us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubestore:v0.36.11-gorgias
+docker push us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/cubestore:v1.0.4-gorgias
+docker push us-central1-docker.pkg.dev/gorgias-revenue-staging/container-images/cubestore:v1.0.4-gorgias
+docker push us-east1-docker.pkg.dev/gorgias-helpdesk-production/container-images/cubestore:v1.0.4-gorgias
+docker push us-central1-docker.pkg.dev/gorgias-revenue-production/container-images/cubestore:v1.0.4-gorgias
 
 ```
 
@@ -47,6 +47,7 @@ docker push us-central1-docker.pkg.dev/gorgias-revenue-production/container-imag
 <p align="center">
   <a href="https://cube.dev?ref=github-readme"><img src="https://raw.githubusercontent.com/cube-js/cube/master/docs/content/cube-logo-with-bg.png" alt="Cube — Semantic Layer for Data Applications" width="300px"></a>
 </p>
+<br/>
 
 <p align="center">
   <a href="https://cube.registration.goldcast.io/events/e0bdd44b-6e9a-4581-be45-9b46fae010b8?ref=github-readme">
