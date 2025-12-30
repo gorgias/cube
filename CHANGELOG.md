@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.35.81](https://github.com/cube-js/cube/compare/v0.35.80...v0.35.81) (2024-09-12)
+
+
+### Bug Fixes
+
+* **api-gateway:** fixes an issue where queries to get the total count of results were incorrectly applying sorting from the original query and also were getting default ordering applied when the query ordering was stripped out ([#8060](https://github.com/cube-js/cube/issues/8060)) Thanks [@rdwoodring](https://github.com/rdwoodring)! ([863f370](https://github.com/cube-js/cube/commit/863f3709e97c904f1c800ad98889dc272dbfddbd))
+* **cubesql:** Use load meta with user change for SQL generation calls ([#8693](https://github.com/cube-js/cube/issues/8693)) ([0f7bb3d](https://github.com/cube-js/cube/commit/0f7bb3d3a96447a69835e3c591ebaf67592c3eed))
+* Updated jsonwebtoken in all packages ([#8282](https://github.com/cube-js/cube/issues/8282)) Thanks  [@jlloyd-widen](https://github.com/jlloyd-widen) ! ([ca7c292](https://github.com/cube-js/cube/commit/ca7c292e0122be50ac7adc9b9d4910623d19f840))
+
+
+### Features
+
+* **cubestore:** Support date_bin function ([#8672](https://github.com/cube-js/cube/issues/8672)) ([64788de](https://github.com/cube-js/cube/commit/64788dea89b0244911518de203929fc5c773cd8f))
+* ksql and rollup pre-aggregations ([#8619](https://github.com/cube-js/cube/issues/8619)) ([cdfbd1e](https://github.com/cube-js/cube/commit/cdfbd1e21ffcf111e40c525f8a391cc0dcee3c11))
+
+
+
+
+
+## [0.35.80](https://github.com/cube-js/cube/compare/v0.35.79...v0.35.80) (2024-09-09)
+
+
+### Bug Fixes
+
+* **schema-compiler:** propagate FILTER_PARAMS from view to inner cube's SELECT ([#8466](https://github.com/cube-js/cube/issues/8466)) ([c0466fd](https://github.com/cube-js/cube/commit/c0466fde9b7a3834159d7ec592362edcab6d9795))
+
+
+### Features
+
+* **cubesql:** Fill pg_description table with cube and members descriptions ([#8618](https://github.com/cube-js/cube/issues/8618)) ([2288c18](https://github.com/cube-js/cube/commit/2288c18bf30d1f3a3299b235fe9b4405d2cb7463))
+* **cubesql:** Support join with type coercion ([#8608](https://github.com/cube-js/cube/issues/8608)) ([46b3a36](https://github.com/cube-js/cube/commit/46b3a36936f0f00805144714f0dd87a3c50a5e0a))
+
+
+
+
+
 ## [0.35.79](https://github.com/cube-js/cube/compare/v0.35.78...v0.35.79) (2024-09-04)
 
 
