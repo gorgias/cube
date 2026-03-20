@@ -50,7 +50,7 @@ tokio = { version = "1", features = ["full", "rt"] }
 futures-timer = "3.0.2"
 indoc = "1.0"
 tempfile = "3.2.0"
-tar = "0.4.38"
+tar = "0.4.45"
 
 [dev-dependencies]
 criterion = { version = "0.4.0", features = ["async_tokio", "html_reports"] }
