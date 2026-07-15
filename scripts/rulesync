@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -euo pipefail
+readonly version='v8.24.1'
+case "$(uname -s)-$(uname -m)" in
+  Darwin-arm64) asset='rulesync-darwin-arm64' ;;
+  Darwin-x86_64) asset='rulesync-darwin-x64' ;;
+  Linux-aarch64 | Linux-arm64) asset='rulesync-linux-arm64' ;;
+  Linux-x86_64) asset='rulesync-linux-x64' ;;
+  *) echo "Unsupported platform: $(uname -s)-$(uname -m)" >&2; exit 1 ;;
+esac
+cache_root="${RULESYNC_CACHE_DIR:-${TMPDIR:-/tmp}/gorgias-rulesync}"
+binary="$cache_root/$version/$asset"
+if [[ ! -x "$binary" ]]; then
+  mkdir -p "$(dirname "$binary")"
+  base_url="https://github.com/dyoshikawa/rulesync/releases/download/$version"
+  temporary_binary="$binary.tmp"
+  checksums="$binary.SHA256SUMS"
+  curl -fsSL "$base_url/$asset" -o "$temporary_binary"
+  curl -fsSL "$base_url/SHA256SUMS" -o "$checksums"
+  expected="$(awk -v asset="$asset" '$2 == asset { print $1 }' "$checksums")"
+  if command -v sha256sum >/dev/null 2>&1; then
+    actual="$(sha256sum "$temporary_binary" | awk '{ print $1 }')"
+  else
+    actual="$(shasum -a 256 "$temporary_binary" | awk '{ print $1 }')"
+  fi
+  if [[ -z "$expected" || "$actual" != "$expected" ]]; then
+    rm -f "$temporary_binary"
+    echo 'RuleSync checksum verification failed.' >&2
+    exit 1
+  fi
+  mv "$temporary_binary" "$binary"
+  chmod +x "$binary"
+fi
+exec "$binary" "$@"

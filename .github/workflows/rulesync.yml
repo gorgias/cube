@@ -1,0 +1,17 @@
+name: RuleSync
+
+on:
+  pull_request:
+  push:
+    branches: [gorgias]
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify generated AI configuration
+        run: ./scripts/check-rulesync-drift.sh

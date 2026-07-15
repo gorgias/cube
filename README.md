@@ -1,6 +1,13 @@
 # Gorgias Fork of Cube
 This fork was made to be able to build our own cubestore image with StatsD metrics fixes for [this issue](https://github.com/cube-js/cube/issues/9920).
 
+## AI tool configuration
+
+RuleSync is the source of truth for shared repository guidance. Edit files under
+`.rulesync/`, run `./scripts/generate-rulesync.sh`, and commit the generated
+`AGENTS.md` and `CLAUDE.md`. CI verifies drift with
+`./scripts/check-rulesync-drift.sh`.
+
 The CI will build and push the image for the `gorgisa` branch but only build the image for testing for other branches.
 
 Locall, build and tag the image with:
