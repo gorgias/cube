@@ -8,7 +8,7 @@ on:
 
 jobs:
   Build:
-    runs-on: ubuntu-latest
+    runs-on: gh-actions-2cpu4gb-dind-runner-set
     steps:
       - name: Enable QEMU
         uses: docker/setup-qemu-action@v3
