@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   drift:
-    runs-on: ubuntu-24.04
+    runs-on: gh-actions-0.5cpu1gb-runner-set
     steps:
       - uses: actions/checkout@v4
       - name: Verify generated AI configuration
